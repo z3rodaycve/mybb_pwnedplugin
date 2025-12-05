@@ -1,0 +1,38 @@
+.hibp-tooltip {
+  position: absolute;
+  top: 50%;
+  right: 8px;     /* position inside the input */
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.hibp-tooltext {
+  visibility: hidden;
+  width: 250px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 5px 10px 5px;
+  position: absolute;
+  right: 0;
+  top: 25px; /* show tooltip on bottom */
+  z-index: 10;
+}
+
+.hibp-tooltip:hover .hibp-tooltext {
+  visibility: visible;
+}
+
+.hibp-password {
+	position: relative;
+}
+
+
+.hibp-password label.error:not(:empty) + .hibp-tooltip {
+    display: none; 
+}
+
+.hibp-password label.error:empty + .hibp-tooltip {
+    display: flex; /* show tooltip if label is empty */
+}
