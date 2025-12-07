@@ -27,7 +27,7 @@ If you need help with installing HIBP Password Check Plugin, feel free to contac
 
 # Future roadmap / To-do List
 - [ ] Add an option to only warn the user, instead of both warning them and blocking submission of a breached/vulnerable password.
-- [ ] Make the HaveIBeenPwned tooltip (logo) customizable. => logo icon, description
+- [X] ~~Make the HaveIBeenPwned tooltip (logo) customizable. => logo icon, description~~
 
 # License
 
