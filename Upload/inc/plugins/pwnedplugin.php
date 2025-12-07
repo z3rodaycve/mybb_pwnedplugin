@@ -60,7 +60,9 @@ function pwnedplugin_uninstall()
 
 	$settings = array(
 		"pwnedplugin_warning",
-		"pwnedplugin_showicon"
+		"pwnedplugin_showicon",
+		"pwnedplugin_tooltipdescription",
+		"pwnedplugin_tooltiplogo"
 	);
 	$settings = "'" . implode("','", $settings) . "'";
 	$db->delete_query("settings", "name IN ({$settings})");
@@ -103,12 +105,26 @@ function pwnedplugin_activate()
 		);
 		$settings[] = array(
 			"name" => "pwnedplugin_showicon",
-			"title" => "Do you want to show the HIBP logo in the password input?",
-			"description" => "Choose whether to display the HIBP logo. <strong>Note:</strong> This setting does not disable the password breach check. To disable the check, you must deactivate the plugin.",
+			"title" => "Do you want to show the HIBP tooltip in the password input?",
+			"description" => "Choose whether to display the HIBP tooltip. <strong>Note:</strong> This setting does not disable the password breach check. To disable the check, you must deactivate the plugin.",
 			"optionscode" => "select
 				show=Show
 				dontshow=Do not show",
 			"value" => "show"
+		);
+		$settings[] = array(
+			"name" => "pwnedplugin_tooltipdescription",
+			"title" => "Do you want to customize the default HIBP tooltip description?",
+			"description" => "You can edit the text shown in the tooltip right here.",
+			"optionscode" => "text",
+			"value" => "We use HaveIBeenPwned to check for a potentially breached password."
+		);
+		$settings[] = array(
+			"name" => "pwnedplugin_tooltiplogo",
+			"title" => "Do you want to change the default logo in the HIBP tooltip?",
+			"description" => "Choose whether to display the default HIBP logo, or replace it with your custom logo.",
+			"optionscode" => "text",
+			"value" => "https://upload.wikimedia.org/wikipedia/commons/2/23/Have_I_Been_Pwned_logo.png"
 		);
 
 		$i = 1;
@@ -135,8 +151,8 @@ function pwnedplugin_activate()
 			"template" => "<div class='hibp-password'>
 		<input type='password' class='textbox' name='password' id='password' style='width: 100%' />
 		<div class='hibp-tooltip'>
-			<img src='https://upload.wikimedia.org/wikipedia/commons/2/23/Have_I_Been_Pwned_logo.png' width='16'>
-			<span class='hibp-tooltext'>We use HaveIBeenPwned to check for a potentially breached password.</span>
+			<img src='%logo%' width='16'>
+			<span class='hibp-tooltext'>%description%</span>
 		</div>
 	</div>"
 		);
@@ -166,7 +182,9 @@ function pwnedplugin_deactivate()
 
 	$settings = array(
 		"pwnedplugin_warning",
-		"pwnedplugin_showicon"
+		"pwnedplugin_showicon",
+		"pwnedplugin_tooltipdescription",
+		"pwnedplugin_tooltiplogo"
 	);
 	$settings = "'" . implode("','", $settings) . "'";
 	$db->delete_query("settings", "name IN ({$settings})");
@@ -189,6 +207,7 @@ function pwnedplugin() {
 
     $plugins->add_hook("datahandler_user_validate", "pwnedplugin_checkhandler"); 
 
+    # Show/Hide Tooltip Handler
     if (trim($mybb->settings['pwnedplugin_showicon']) === 'dontshow') # turns out pwnedplugin_showicon had like 12 random spaces in front of it, so my if statement was never true ~ :D, added trim() to get rid of the whitespaces.
     {   
         $pwnedplugin = '<input type="password" class="textbox" name="password" id="password" style="width: 100%" />';
@@ -198,11 +217,18 @@ function pwnedplugin() {
         $pwnedplugin = "<div class='hibp-password'>
             <input type='password' class='textbox' name='password' id='password' style='width: 100%' />
             <div class='hibp-tooltip'>
-                <img src='https://upload.wikimedia.org/wikipedia/commons/2/23/Have_I_Been_Pwned_logo.png' width='16'>
-                <span class='hibp-tooltext'>We use HaveIBeenPwned to check for a potentially breached password.</span>
+                <img src='%logo%' width='16'>
+                <span class='hibp-tooltext'>%description%</span>
             </div>
         </div>";
     }
+
+    # Tooltip Description Handler
+    $pwnedplugin = str_replace("%description%", trim($mybb->settings['pwnedplugin_tooltipdescription']), $pwnedplugin);
+
+    # Tooltip Logo Handler
+    $pwnedplugin = str_replace("%logo%", trim($mybb->settings['pwnedplugin_tooltiplogo']), $pwnedplugin);
+
 }
 
 function pwnedplugin_checkhandler(&$userhandler)
