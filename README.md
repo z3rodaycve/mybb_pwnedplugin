@@ -19,7 +19,7 @@ HIBP Password Check is a opensource MyBB plugin that **allows** you to **check 
 
 [Installation](#howtoinstall) is **simple**, to install **HIBP Password Check Plugin** you need to:
 
-1. *Copy the repository* / *Download the MyBB plugin* under **releases** (or from official [MyBB extend site](placeholder)), and **extract it** (as the file is in .zip format)
+1. *Copy the repository* / *Download the MyBB plugin* under **releases** (or from official [MyBB extend site](https://community.mybb.com/mods.php?action=view&pid=1677)), and **extract it** (as the file is in .zip format)
 2. Copy the contents of `pwnedplugin.css`, and create a new **Theme Stylesheet** *(not required if you do not want to show the HaveIBeenPwned tooltip)*
 3. **Install** and **activate** the MyBB plugin!
   
